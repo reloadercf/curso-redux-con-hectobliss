@@ -1,10 +1,12 @@
 //import * as Redux from 'redux'
-import {createStore} from 'redux'
+import {createStore,combineReducers} from 'redux'
 import { inherits } from 'util';
 
 //nodes
 let input= document.getElementById('input');
 let lista= document.getElementById('lista');
+let addEmail=document.getElementById("addEmail")
+let emailList=document.getElementById("emailList")
 let todos={
     0:{
         text:"Ir al cine",
@@ -20,6 +22,33 @@ let todos={
     }
 };
 //function
+
+
+function drawEmails() {
+    emailList.innerHTML = ""
+    let emails = store.getState().emails
+    emails.map(email => {
+      let li = document.createElement('li')
+      li.innerHTML = `
+        <span>${email}</span>
+        <span id="${email}" >X</span>
+      `
+      setEmailClickListener(li)
+      emailList.appendChild(li)
+    })
+  
+  }
+
+  function setEmailClickListener(li){
+      li.addEventListener("click", e=>{
+          let email=e.target.id
+          store.dispatch({
+              type:"DELETE_EMAIL",
+              email
+          })
+      })
+  }
+
 function drawTodos(){
     lista.innerHTML='';
     //actualizar lod todos antes de dibujar
@@ -76,9 +105,29 @@ input.addEventListener('keydown',e=>{
         //drawTodos();
     }
 });
+addEmail.addEventListener('keydown', e => {
+    if (e.key === "Enter") {
+      let email = e.target.value
+      e.target.value = ""
+      store.dispatch({
+        type: "ADD_EMAIL",
+        email
+      })
+    }
+  })
 
 
 //Redux
+function emailsReducer(state = [], action) {
+    switch (action.type) {
+      case "ADD_EMAIL":
+        return [action.email, ...state]
+      case "DELETE_EMAIL":
+        return [...state.filter(mail => mail !== action.email)]
+      default:
+        return state
+    }
+  }
 
 //reducer
 function todosReducer(state={}, action){
@@ -96,19 +145,33 @@ function todosReducer(state={}, action){
     }
 }
 
+//combinar los reducers
+let rootReducer=combineReducers({
+    todos: todosReducer,
+    email: emailsReducer
+})
+
 //store
-let store=createStore(todosReducer,{
-    0:{
-        text:"crear store",
-        done:true,
-        id:0
+let store = createStore(rootReducer, {
+    emails: ["elcfm1@gmail.com"],
+    todos: {
+      0: {
+        text: "crear store",
+        done: true,
+        id: 0
+      }
     }
-});
+  });
 
 //sustituir los todos
 // todos=store.getState();
 
 //que hacer cuando hay cambios?
-store.subscribe(drawTodos);
-//init 
-drawTodos();
+store.subscribe(() => {
+    drawTodos()
+    drawEmails()
+  })
+  
+  //init
+  drawTodos();
+  drawEmails();

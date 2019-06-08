@@ -10,26 +10,37 @@
 </head>
 
 <body>
-<div id="root">
-<input id="addEmail" type="text" placeholder="Agrega un correo">
-    <ul>
+  <div id="root">
+    <input id="input" placeholder="Agregar cosa por hacer" type="text" />
+    <ul id="lista">
       <li>
-      <span>elcfm1@gmail.com</span>
-      <span>X</span>
+        <span>Cenar</span>
+        <span>X</span>
+      </li>
+      <li>
+        <span>Escribir</span>
+        <span>X</span>
+      </li>
+      <li>
+        <span>
+          Leer
+        </span>
+        <span>X</span>
       </li>
     </ul>
-    <input id='input' placeholder="Agregar cosas por hacer" type="text">
-    <ul id='lista'>
-        <li><span>cenar</span><span>X</span></li>
-        <li><span>Escribir</span><span>X</span></li>
-        <li><span>leer</span><span>X</span></li>
-        
-    <ul>
-    
-</div>
+    <input id="addEmail" type="text" placeholder="Agrega un correo">
+    <ul id="emailsList">
+      <li>
+        <span>bliss@gmail.com</span>
+        <span>X</span>
+      </li>
+    </ul>
+  </div>
 
-
-<script src="build/carlos.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.1/redux.min.js"></script> -->
+  <!-- <script src="node_modules/redux/dist/redux.js"></script> -->
+  <!-- <script src="main.js"></script> -->
+  <script src="build/fixter.js"></script>
 </body>
 
 </html>
